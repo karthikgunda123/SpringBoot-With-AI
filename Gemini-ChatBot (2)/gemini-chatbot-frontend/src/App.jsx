@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import ChatInput from "./components/ChatInput.jsx";
+import ChatResponse from "./components/ChatResponse.jsx";
+import {useState} from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+function App()
+{
+    const [response, setResponse] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const handleQuestionSubmit = async (question) => {
+        setLoading(true);
+        setResponse(null);
+        try {
+            const apiResponse = await fetchChatResponse(question);
+            setResponse(apiResponse);
+        } catch (error) {
+            alert("Failed to get response")
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return (
+        <div className='App'>
+            <header className='bg-primary text-white text-center py-4'>
+                <h1>Gemini ChatBot</h1>
+            </header>
+            <ChatInput onSubmit={handleQuestionSubmit}/>
+            {loading && <h3>Loading...</h3>}
+            <ChatResponse response={response}/>
+            {/* RESPONSE */}
+        </div>
+    )
 }
 
 export default App
