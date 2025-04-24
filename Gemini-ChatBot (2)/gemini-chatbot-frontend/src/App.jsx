@@ -2,6 +2,7 @@ import './App.css'
 import ChatInput from "./components/ChatInput.jsx";
 import ChatResponse from "./components/ChatResponse.jsx";
 import {useState} from "react";
+import {fetchChatResponse} from "./services/api.jsx";
 
 function App()
 {
